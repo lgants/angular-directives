@@ -7,7 +7,8 @@ import {
   Renderer2,
   ElementRef,
   HostListener,
-  HostBinding
+  HostBinding,
+  Input
 } from '@angular/core';
 
 // will be recognized whenever adding the selector without square brackets to an element
@@ -16,8 +17,15 @@ import {
 })
 
 export class BetterHighlightDirective implements OnInit {
+  // @Input enables passing a string color to overwrite with the binding  [defaultColor]="'yellow'"
+  @Input() defaultColor: string = 'transparent';
+  // sets an alias
+  // by default, the directive is not accessed in square brackets; that only happens if the directive has a property with the same name or alias of the directive such as below
+  @Input('appBetterHighlight') highlightColor: string = 'blue';
   // alternative approach to using renderer
-  @HostBinding('style.backgroundColor') backgroundColor: string = 'transparent';
+  // commented out after adding @Input
+  // @HostBinding('style.backgroundColor') backgroundColor: string = 'transparent';
+  @HostBinding('style.backgroundColor') backgroundColor: string = this.defaultColor;
 
   constructor(private elRef: ElementRef, private renderer: Renderer2) {}
 
@@ -31,12 +39,16 @@ export class BetterHighlightDirective implements OnInit {
   @HostListener('mouseenter') mouseover(eventData: Event) {
     // commented out after adding @HostBinding
     // this.renderer.setStyle(this.elRef.nativeElement, 'backgroundColor', 'blue');
-    this.backgroundColor = 'blue';
+    // commented out after adding @Input
+    // this.backgroundColor = 'blue';
+    this.backgroundColor = this.highlightColor;
   }
 
   @HostListener('mouseleave') mouseleave(eventData: Event) {
     // commented out after adding @HostBinding
     // this.renderer.setStyle(this.elRef.nativeElement, 'backgroundColor', 'transparent');
-    this.backgroundColor = 'transparent';
+    // commented out after adding @Input
+    // this.backgroundColor = 'transparent';
+    this.backgroundColor = this.defaultColor;
   }
 }
