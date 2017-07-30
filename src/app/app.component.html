@@ -7,8 +7,8 @@
       <br><br>
       <ul class="list-group">
         <div *ngIf="onlyOdd">
-          <!-- can't have more than one structural directive on the same element (e.g. cannot use both ngFor and ngIf) -->
-          <!-- the * denotes a structural directive -->
+          can't have more than one structural directive on the same element (e.g. cannot use both ngFor and ngIf)
+          the * denotes a structural directive
           <li
             class="list-group-item"
             *ngFor="let odd of oddNumbers"
@@ -17,7 +17,8 @@
             {{ odd }}
           </li>
         </div>
-        <div *ngIf="onlyOdd != true">
+        <!-- commented out when adding the unless directive -->
+        <!-- <div *ngIf="onlyOdd != true">
           <li
             class="list-group-item"
             *ngFor="let even of evenNumbers"
@@ -26,7 +27,7 @@
             {{ even }}
           </li>
         </div>
-        <!-- the structural directive used on the div container above is more natural, but could also be accomplished with the following (in the background, angular transforms the above into this): -->
+        the structural directive used on the div container above is more natural, but could also be accomplished with the following (in the background, angular transforms the above into this):
         <ng-template [ngIf]="!onlyOdd">
           <div>
             <li
@@ -37,7 +38,16 @@
               {{ even }}
             </li>
           </div>
-        </ng-template>
+        </ng-template> -->
+        <div *appUnless="onlyOdd">
+          <li
+            class="list-group-item"
+            *ngFor="let even of evenNumbers"
+            [ngClass]="{odd: even % 2 !== 0}"
+            [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : transparent}">
+            {{ even }}
+          </li>
+        </div>
       </ul>
       <p appBasicHighlight>Style me with basic directive</p>
       <!-- <p appBetterHighlight>Style me with better directive</p> -->
